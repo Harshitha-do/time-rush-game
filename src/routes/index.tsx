@@ -949,7 +949,7 @@ function InstructionsModal({ onClose }: { onClose: () => void }) {
         <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
           <li>• Solve the equation and press Enter or Go.</li>
           <li>• +10 for a correct answer, +5 bonus if under 3 seconds.</li>
-          <li>• You have 30 seconds and 3 lives — a wrong answer costs one.</li>
+          <li>• Pick your round time (up to 5 minutes) and 3 lives — a wrong answer costs one.</li>
           <li>• Streaks unlock motivational boosts. Score high, earn badges.</li>
         </ul>
         <button
