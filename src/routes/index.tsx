@@ -49,7 +49,16 @@ interface HighScoreData {
 const HS_KEY = "mathChallenge:highscore:v1";
 const THEME_KEY = "mathChallenge:theme";
 const MUTE_KEY = "mathChallenge:muted";
-const ROUND_SECONDS = 30;
+const DEFAULT_ROUND_SECONDS = 30;
+const MAX_ROUND_SECONDS = 300; // 5 minutes
+const MIN_ROUND_SECONDS = 10;
+const TIME_PRESETS: { label: string; value: number }[] = [
+  { label: "30s", value: 30 },
+  { label: "1m", value: 60 },
+  { label: "2m", value: 120 },
+  { label: "3m", value: 180 },
+  { label: "5m", value: 300 },
+];
 const BONUS_WINDOW_MS = 3000;
 
 const QUOTES = [
@@ -240,6 +249,7 @@ function saveHigh(data: HighScoreData) {
 function MathChallengePage() {
   const [screen, setScreen] = useState<Screen>("home");
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
+  const [roundSeconds, setRoundSeconds] = useState<number>(DEFAULT_ROUND_SECONDS);
   const [dark, setDark] = useState(false);
   const [muted, setMuted] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
@@ -281,7 +291,7 @@ function MathChallengePage() {
   }, [muted]);
 
   /* Game state */
-  const [timeLeft, setTimeLeft] = useState(ROUND_SECONDS);
+  const [timeLeft, setTimeLeft] = useState(DEFAULT_ROUND_SECONDS);
   const [lives, setLives] = useState(3);
   const [question, setQuestion] = useState<Question | null>(null);
   const [input, setInput] = useState("");
@@ -332,7 +342,7 @@ function MathChallengePage() {
       fastestMs: null,
       answered: 0,
     });
-    setTimeLeft(ROUND_SECONDS);
+    setTimeLeft(roundSeconds);
     setLives(3);
     setInput("");
     setFeedback(null);
@@ -493,6 +503,15 @@ function MathChallengePage() {
               sounds.click();
               setDifficulty(d);
             }}
+            roundSeconds={roundSeconds}
+            setRoundSeconds={(s) => {
+              sounds.click();
+              const clamped = Math.max(
+                MIN_ROUND_SECONDS,
+                Math.min(MAX_ROUND_SECONDS, Math.round(s)),
+              );
+              setRoundSeconds(clamped);
+            }}
             onStart={startGame}
             highData={highData}
             onInstructions={() => {
@@ -550,12 +569,16 @@ function MathChallengePage() {
 function HomeScreen({
   difficulty,
   setDifficulty,
+  roundSeconds,
+  setRoundSeconds,
   onStart,
   highData,
   onInstructions,
 }: {
   difficulty: Difficulty;
   setDifficulty: (d: Difficulty) => void;
+  roundSeconds: number;
+  setRoundSeconds: (s: number) => void;
   onStart: () => void;
   highData: HighScoreData;
   onInstructions: () => void;
@@ -566,6 +589,13 @@ function HomeScreen({
     { key: "hard", label: "Hard", hint: "+ − × ÷ · 1–100" },
   ];
 
+  const formatDuration = (s: number) => {
+    if (s < 60) return `${s} seconds`;
+    const m = Math.floor(s / 60);
+    const rem = s % 60;
+    return rem === 0 ? `${m} minute${m > 1 ? "s" : ""}` : `${m}m ${rem}s`;
+  };
+
   return (
     <div className="mc-card mc-pop mt-4 rounded-3xl p-8 sm:p-10">
       <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl">
@@ -575,8 +605,8 @@ function HomeScreen({
         </span>
       </h1>
       <p className="mx-auto mt-3 max-w-md text-center text-sm text-muted-foreground sm:text-base">
-        Solve as many problems as you can in 30 seconds. Fast answers score bonus
-        points.
+        Solve as many problems as you can before time runs out. Fast answers
+        score bonus points.
       </p>
 
       {/* Difficulty */}
@@ -606,6 +636,49 @@ function HomeScreen({
               </button>
             );
           })}
+        </div>
+      </div>
+
+      {/* Time selector */}
+      <div className="mt-6">
+        <div className="mb-3 flex items-center justify-between">
+          <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            Round Time
+          </div>
+          <div className="text-xs font-bold">{formatDuration(roundSeconds)}</div>
+        </div>
+        <div className="grid grid-cols-5 gap-2">
+          {TIME_PRESETS.map((p) => {
+            const active = roundSeconds === p.value;
+            return (
+              <button
+                key={p.value}
+                onClick={() => setRoundSeconds(p.value)}
+                className={`rounded-xl border py-2 text-sm font-bold transition ${
+                  active
+                    ? "border-transparent bg-gradient-to-br from-violet-500 to-blue-500 text-white shadow"
+                    : "mc-chip hover:scale-[1.02]"
+                }`}
+              >
+                {p.label}
+              </button>
+            );
+          })}
+        </div>
+        <div className="mt-4 flex items-center gap-3">
+          <input
+            type="range"
+            min={MIN_ROUND_SECONDS}
+            max={MAX_ROUND_SECONDS}
+            step={5}
+            value={roundSeconds}
+            onChange={(e) => setRoundSeconds(Number(e.target.value))}
+            className="mc-range w-full accent-violet-500"
+            aria-label="Round time in seconds"
+          />
+          <span className="w-16 text-right text-xs font-semibold text-muted-foreground">
+            max 5m
+          </span>
         </div>
       </div>
 
@@ -876,7 +949,7 @@ function InstructionsModal({ onClose }: { onClose: () => void }) {
         <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
           <li>• Solve the equation and press Enter or Go.</li>
           <li>• +10 for a correct answer, +5 bonus if under 3 seconds.</li>
-          <li>• You have 30 seconds and 3 lives — a wrong answer costs one.</li>
+          <li>• Pick your round time (up to 5 minutes) and 3 lives — a wrong answer costs one.</li>
           <li>• Streaks unlock motivational boosts. Score high, earn badges.</li>
         </ul>
         <button
