@@ -49,7 +49,16 @@ interface HighScoreData {
 const HS_KEY = "mathChallenge:highscore:v1";
 const THEME_KEY = "mathChallenge:theme";
 const MUTE_KEY = "mathChallenge:muted";
-const ROUND_SECONDS = 30;
+const DEFAULT_ROUND_SECONDS = 30;
+const MAX_ROUND_SECONDS = 300; // 5 minutes
+const MIN_ROUND_SECONDS = 10;
+const TIME_PRESETS: { label: string; value: number }[] = [
+  { label: "30s", value: 30 },
+  { label: "1m", value: 60 },
+  { label: "2m", value: 120 },
+  { label: "3m", value: 180 },
+  { label: "5m", value: 300 },
+];
 const BONUS_WINDOW_MS = 3000;
 
 const QUOTES = [
@@ -240,6 +249,7 @@ function saveHigh(data: HighScoreData) {
 function MathChallengePage() {
   const [screen, setScreen] = useState<Screen>("home");
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
+  const [roundSeconds, setRoundSeconds] = useState<number>(DEFAULT_ROUND_SECONDS);
   const [dark, setDark] = useState(false);
   const [muted, setMuted] = useState(false);
   const [showInstructions, setShowInstructions] = useState(false);
@@ -281,7 +291,7 @@ function MathChallengePage() {
   }, [muted]);
 
   /* Game state */
-  const [timeLeft, setTimeLeft] = useState(ROUND_SECONDS);
+  const [timeLeft, setTimeLeft] = useState(DEFAULT_ROUND_SECONDS);
   const [lives, setLives] = useState(3);
   const [question, setQuestion] = useState<Question | null>(null);
   const [input, setInput] = useState("");
@@ -332,7 +342,7 @@ function MathChallengePage() {
       fastestMs: null,
       answered: 0,
     });
-    setTimeLeft(ROUND_SECONDS);
+    setTimeLeft(roundSeconds);
     setLives(3);
     setInput("");
     setFeedback(null);
@@ -492,6 +502,15 @@ function MathChallengePage() {
             setDifficulty={(d) => {
               sounds.click();
               setDifficulty(d);
+            }}
+            roundSeconds={roundSeconds}
+            setRoundSeconds={(s) => {
+              sounds.click();
+              const clamped = Math.max(
+                MIN_ROUND_SECONDS,
+                Math.min(MAX_ROUND_SECONDS, Math.round(s)),
+              );
+              setRoundSeconds(clamped);
             }}
             onStart={startGame}
             highData={highData}
