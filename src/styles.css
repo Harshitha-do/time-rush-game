@@ -4,6 +4,103 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Math Challenge design tokens */
+:root {
+  --mc-primary: 250 84% 60%;
+  --mc-primary-2: 220 90% 58%;
+  --mc-accent: 158 72% 45%;
+  --mc-warn: 28 96% 58%;
+  --mc-danger: 356 82% 60%;
+}
+
+html, body {
+  font-family: "Poppins", ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+.mc-gradient-bg {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, oklch(0.85 0.15 280 / 0.35), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, oklch(0.85 0.15 220 / 0.35), transparent 60%),
+    radial-gradient(800px 500px at 50% 110%, oklch(0.85 0.15 160 / 0.30), transparent 60%),
+    linear-gradient(180deg, oklch(0.98 0.01 260), oklch(0.95 0.02 280));
+}
+.dark .mc-gradient-bg {
+  background:
+    radial-gradient(1200px 600px at 10% -10%, oklch(0.45 0.18 280 / 0.45), transparent 60%),
+    radial-gradient(900px 500px at 110% 10%, oklch(0.45 0.18 220 / 0.45), transparent 60%),
+    radial-gradient(800px 500px at 50% 110%, oklch(0.45 0.18 160 / 0.35), transparent 60%),
+    linear-gradient(180deg, oklch(0.16 0.03 265), oklch(0.12 0.04 270));
+}
+
+.mc-card {
+  background: color-mix(in oklab, var(--color-background) 82%, transparent);
+  backdrop-filter: blur(14px);
+  border: 1px solid color-mix(in oklab, var(--color-foreground) 10%, transparent);
+  box-shadow:
+    0 30px 60px -20px oklch(0.2 0.05 270 / 0.25),
+    0 10px 25px -10px oklch(0.2 0.05 270 / 0.15);
+}
+
+.mc-btn-primary {
+  background: linear-gradient(135deg, oklch(0.62 0.22 280), oklch(0.60 0.22 230));
+  color: white;
+  box-shadow: 0 10px 30px -10px oklch(0.55 0.25 270 / 0.6);
+  transition: transform .15s ease, box-shadow .2s ease, filter .2s ease;
+}
+.mc-btn-primary:hover { transform: translateY(-2px); filter: brightness(1.05); }
+.mc-btn-primary:active { transform: translateY(0); }
+
+.mc-chip {
+  background: color-mix(in oklab, var(--color-foreground) 6%, transparent);
+  border: 1px solid color-mix(in oklab, var(--color-foreground) 10%, transparent);
+}
+
+@keyframes mc-pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  60% { transform: scale(1.15); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.mc-pop { animation: mc-pop .35s ease-out; }
+
+@keyframes mc-shake {
+  0%,100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+.mc-shake { animation: mc-shake .4s ease-in-out; }
+
+@keyframes mc-flash-green {
+  0% { background-color: oklch(0.82 0.18 150 / 0.0); }
+  30% { background-color: oklch(0.82 0.18 150 / 0.35); }
+  100% { background-color: oklch(0.82 0.18 150 / 0.0); }
+}
+.mc-flash-correct { animation: mc-flash-green .6s ease-out; }
+
+@keyframes mc-flash-red {
+  0% { background-color: oklch(0.72 0.22 20 / 0.0); }
+  30% { background-color: oklch(0.72 0.22 20 / 0.35); }
+  100% { background-color: oklch(0.72 0.22 20 / 0.0); }
+}
+.mc-flash-wrong { animation: mc-flash-red .6s ease-out; }
+
+@keyframes mc-pulse {
+  0%,100% { transform: scale(1); color: oklch(0.65 0.22 25); }
+  50% { transform: scale(1.15); color: oklch(0.55 0.28 25); }
+}
+.mc-pulse-timer { animation: mc-pulse 1s ease-in-out infinite; }
+
+@keyframes mc-confetti-fall {
+  0% { transform: translateY(-10vh) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+}
+.mc-confetti-piece {
+  position: fixed; top: 0; width: 10px; height: 14px; border-radius: 2px;
+  animation: mc-confetti-fall linear forwards;
+  pointer-events: none; z-index: 60;
+}
+
 /*
  * Design system definition.
  *
