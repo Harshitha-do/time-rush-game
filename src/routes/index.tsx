@@ -569,12 +569,16 @@ function MathChallengePage() {
 function HomeScreen({
   difficulty,
   setDifficulty,
+  roundSeconds,
+  setRoundSeconds,
   onStart,
   highData,
   onInstructions,
 }: {
   difficulty: Difficulty;
   setDifficulty: (d: Difficulty) => void;
+  roundSeconds: number;
+  setRoundSeconds: (s: number) => void;
   onStart: () => void;
   highData: HighScoreData;
   onInstructions: () => void;
@@ -585,6 +589,13 @@ function HomeScreen({
     { key: "hard", label: "Hard", hint: "+ − × ÷ · 1–100" },
   ];
 
+  const formatDuration = (s: number) => {
+    if (s < 60) return `${s} seconds`;
+    const m = Math.floor(s / 60);
+    const rem = s % 60;
+    return rem === 0 ? `${m} minute${m > 1 ? "s" : ""}` : `${m}m ${rem}s`;
+  };
+
   return (
     <div className="mc-card mc-pop mt-4 rounded-3xl p-8 sm:p-10">
       <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl">
@@ -594,8 +605,8 @@ function HomeScreen({
         </span>
       </h1>
       <p className="mx-auto mt-3 max-w-md text-center text-sm text-muted-foreground sm:text-base">
-        Solve as many problems as you can in 30 seconds. Fast answers score bonus
-        points.
+        Solve as many problems as you can before time runs out. Fast answers
+        score bonus points.
       </p>
 
       {/* Difficulty */}
@@ -625,6 +636,49 @@ function HomeScreen({
               </button>
             );
           })}
+        </div>
+      </div>
+
+      {/* Time selector */}
+      <div className="mt-6">
+        <div className="mb-3 flex items-center justify-between">
+          <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+            Round Time
+          </div>
+          <div className="text-xs font-bold">{formatDuration(roundSeconds)}</div>
+        </div>
+        <div className="grid grid-cols-5 gap-2">
+          {TIME_PRESETS.map((p) => {
+            const active = roundSeconds === p.value;
+            return (
+              <button
+                key={p.value}
+                onClick={() => setRoundSeconds(p.value)}
+                className={`rounded-xl border py-2 text-sm font-bold transition ${
+                  active
+                    ? "border-transparent bg-gradient-to-br from-violet-500 to-blue-500 text-white shadow"
+                    : "mc-chip hover:scale-[1.02]"
+                }`}
+              >
+                {p.label}
+              </button>
+            );
+          })}
+        </div>
+        <div className="mt-4 flex items-center gap-3">
+          <input
+            type="range"
+            min={MIN_ROUND_SECONDS}
+            max={MAX_ROUND_SECONDS}
+            step={5}
+            value={roundSeconds}
+            onChange={(e) => setRoundSeconds(Number(e.target.value))}
+            className="mc-range w-full accent-violet-500"
+            aria-label="Round time in seconds"
+          />
+          <span className="w-16 text-right text-xs font-semibold text-muted-foreground">
+            max 5m
+          </span>
         </div>
       </div>
 
