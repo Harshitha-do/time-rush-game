@@ -77,10 +77,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Math Challenge — Mental Math Quiz Game" },
+      { title: "Time Rush — Mental Math Quiz Game" },
       { name: "description", content: "A fast, colorful browser math quiz game. Beat the timer, keep your streak, and climb the high score board." },
       { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Math Challenge — Mental Math Quiz Game" },
+      { property: "og:title", content: "Time Rush — Mental Math Quiz Game" },
       { property: "og:description", content: "Solve random math problems against the clock. Three difficulty levels, streaks, badges, and high scores." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },

@@ -2,10 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export const Route = createFileRoute("/")({
-  component: MathChallengePage,
+  component: TimeRushPage,
   head: () => ({
     meta: [
-      { title: "Math Challenge — Beat the Clock" },
+      { title: "Time Rush — Beat the Clock" },
       {
         name: "description",
         content:
@@ -246,7 +246,7 @@ function saveHigh(data: HighScoreData) {
 
 /* ---------------- Main component ---------------- */
 
-function MathChallengePage() {
+function TimeRushPage() {
   const [screen, setScreen] = useState<Screen>("home");
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
   const [roundSeconds, setRoundSeconds] = useState<number>(DEFAULT_ROUND_SECONDS);
@@ -466,9 +466,9 @@ function MathChallengePage() {
           </div>
           <div className="leading-tight">
             <div className="text-sm font-semibold tracking-wide text-muted-foreground">
-              MATH
+              TIME
             </div>
-            <div className="-mt-1 text-lg font-extrabold">Challenge</div>
+            <div className="-mt-1 text-lg font-extrabold">Rush</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -599,7 +599,7 @@ function HomeScreen({
   return (
     <div className="mc-card mc-pop mt-4 rounded-3xl p-8 sm:p-10">
       <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl">
-        Math Challenge — Beat the{" "}
+        Time Rush — Beat the{" "}
         <span className="bg-gradient-to-r from-violet-500 via-blue-500 to-emerald-500 bg-clip-text text-transparent">
           Clock
         </span>
