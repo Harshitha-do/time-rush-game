@@ -599,7 +599,7 @@ function HomeScreen({
   return (
     <div className="mc-card mc-pop mt-4 rounded-3xl p-8 sm:p-10">
       <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl">
-        Math Challenge — Beat the{" "}
+        Time Rush — Beat the{" "}
         <span className="bg-gradient-to-r from-violet-500 via-blue-500 to-emerald-500 bg-clip-text text-transparent">
           Clock
         </span>
