@@ -4,4 +4,4 @@
 
 ## Pages
 
-- [Home](/): Play the Math Challenge game — pick difficulty, set a round time up to 5 minutes, and compete against your high score.
+- [Home](/): Play the Time Rush game — pick difficulty, set a round time up to 5 minutes, and compete against your high score.
