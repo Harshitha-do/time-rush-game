@@ -246,7 +246,7 @@ function saveHigh(data: HighScoreData) {
 
 /* ---------------- Main component ---------------- */
 
-function MathChallengePage() {
+function TimeRushPage() {
   const [screen, setScreen] = useState<Screen>("home");
   const [difficulty, setDifficulty] = useState<Difficulty>("easy");
   const [roundSeconds, setRoundSeconds] = useState<number>(DEFAULT_ROUND_SECONDS);
