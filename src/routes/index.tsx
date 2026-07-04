@@ -2,10 +2,10 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export const Route = createFileRoute("/")({
-  component: MathChallengePage,
+  component: TimeRushPage,
   head: () => ({
     meta: [
-      { title: "Math Challenge — Beat the Clock" },
+      { title: "Time Rush — Beat the Clock" },
       {
         name: "description",
         content:
