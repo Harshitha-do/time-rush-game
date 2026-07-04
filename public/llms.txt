@@ -1,4 +1,4 @@
-# Math Challenge
+# Time Rush
 
 > A browser-based mental math quiz game. Solve randomly generated arithmetic problems against a customizable timer across three difficulty levels, with streaks, badges, and local high scores.
 
