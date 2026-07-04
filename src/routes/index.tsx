@@ -599,7 +599,7 @@ function HomeScreen({
   return (
     <div className="mc-card mc-pop mt-4 rounded-3xl p-8 sm:p-10">
       <h1 className="text-center text-4xl font-extrabold tracking-tight sm:text-5xl">
-        Beat the{" "}
+        Math Challenge — Beat the{" "}
         <span className="bg-gradient-to-r from-violet-500 via-blue-500 to-emerald-500 bg-clip-text text-transparent">
           Clock
         </span>
@@ -611,9 +611,9 @@ function HomeScreen({
 
       {/* Difficulty */}
       <div className="mt-8">
-        <div className="mb-3 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        <h2 className="mb-3 text-center text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Difficulty
-        </div>
+        </h2>
         <div className="grid grid-cols-3 gap-2 sm:gap-3">
           {diffs.map((d) => {
             const active = difficulty === d.key;
@@ -699,6 +699,7 @@ function HomeScreen({
       </div>
 
       {/* High score summary */}
+      <h2 className="sr-only">High score summary</h2>
       <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-3">
         <StatTile label="High Score" value={highData.high.toString()} />
         <StatTile label="Best Accuracy" value={`${highData.bestAccuracy}%`} />
@@ -875,9 +876,9 @@ function GameOverScreen({
   return (
     <div className="mc-card mc-pop mt-4 rounded-3xl p-8 sm:p-10">
       <div className="text-center">
-        <div className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+        <h2 className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
           Game Over
-        </div>
+        </h2>
         <div className="mt-1 text-5xl font-extrabold sm:text-6xl">
           {stats.score}
         </div>
