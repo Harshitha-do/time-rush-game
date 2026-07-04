@@ -466,9 +466,9 @@ function TimeRushPage() {
           </div>
           <div className="leading-tight">
             <div className="text-sm font-semibold tracking-wide text-muted-foreground">
-              MATH
+              TIME
             </div>
-            <div className="-mt-1 text-lg font-extrabold">Challenge</div>
+            <div className="-mt-1 text-lg font-extrabold">Rush</div>
           </div>
         </div>
         <div className="flex items-center gap-2">
